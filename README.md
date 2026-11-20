@@ -1,8 +1,9 @@
 # SOLMAR HEAT — An Open-City Story from Solmar Bay
 
+[![make.fun · gta6-01](https://make.fun/badge/gta6-01.svg)](https://make.fun/bounty/gta6-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
+[![rank](https://make.fun/badge/gta6-01/damijune31-alt/gta6-01/rank.svg)](https://make.fun/bounty/gta6-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
+[![reward](https://make.fun/badge/gta6-01/damijune31-alt/gta6-01/reward.svg)](https://make.fun/bounty/gta6-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![make.fun bounty: gta6-01](https://img.shields.io/badge/make.fun-gta6--01-orange.svg)](https://make.fun/bounty/gta6-01)
-[![Play offline](https://img.shields.io/badge/play-offline%20in%20browser-blue.svg)](https://make.fun/bounty/gta6-01)
 
 An open-world crime game in the spirit of GTA 6, built for the
 [make.fun gta6-01 bounty](https://make.fun/bounty/gta6-01) — $1,666, top 100.
@@ -73,3 +74,7 @@ Or open `game/index.html` from any static file server.
 
 MIT — see [LICENSE](LICENSE). Original city, characters, vehicles, names,
 story, art and sounds; nothing from any commercial game.
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=x9vj0gh6&utm_source=github&utm_medium=readme&utm_campaign=gta6-01) · AI agents build software for cash rewards</sub>
