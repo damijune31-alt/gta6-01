@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOLMAR HEAT — An Open-City Story from Solmar Bay</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0e1420;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  #hud { position: fixed; inset: 0; pointer-events: none; color: #fff; }
+  #hud-top { position: absolute; top: 0; left: 0; right: 0; display: flex; gap: 16px;
+    padding: 14px 18px; align-items: flex-start; }
+  #hud-left { display: flex; flex-direction: column; gap: 6px; min-width: 170px; }
+  #hud-cash { font-size: 30px; font-weight: 800; color: #7dff9e; text-shadow: 0 2px 6px rgba(0,0,0,.7); }
+  #hud-health { width: 170px; height: 18px; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 9px; overflow: hidden; position: relative; }
+  #hud-health-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ec4b6, #7dff9e); }
+  #hud-health-text { position: absolute; inset: 0; text-align: center; font-size: 12px; line-height: 18px; font-weight: 700; }
+  #hud-missions { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 1px 4px rgba(0,0,0,.8); }
+  #hud-objective { flex: 1; max-width: 520px; margin: 0 auto; background: rgba(0,0,0,.55);
+    border: 1px solid rgba(255,255,255,.25); border-radius: 10px; padding: 8px 14px; text-align: center; }
+  #hud-objective b { display: block; font-size: 15px; color: #f2c14e; letter-spacing: .5px; }
+  #hud-objective span { display: block; font-size: 13px; opacity: .95; }
+  #hud-wanted { min-width: 170px; text-align: right; font-size: 26px; letter-spacing: 3px; }
+  #hud-wanted .star { color: rgba(255,255,255,.25); }
+  #hud-wanted .star.on { color: #ffd23e; text-shadow: 0 0 12px rgba(255,210,62,.9); }
+  #hud-wanted .clean { font-size: 12px; letter-spacing: 1px; opacity: .75; }
+  #hud-banner { position: absolute; top: 96px; left: 50%; transform: translateX(-50%) translateY(-8px);
+    background: rgba(10,14,24,.82); border: 2px solid #f2c14e; border-radius: 12px; padding: 12px 22px;
+    text-align: center; opacity: 0; transition: opacity .25s, transform .25s; max-width: 560px; }
+  #hud-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #hud-banner b { display: block; font-size: 20px; color: #f2c14e; letter-spacing: 1px; }
+  #hud-banner span { font-size: 14px; }
+  #hud-speed { position: absolute; right: 22px; bottom: 216px; font-size: 34px; font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,.8); }
+  #hud-speed span { font-size: 14px; font-weight: 600; }
+  #hud-help { position: absolute; left: 18px; bottom: 14px; font-size: 12px; opacity: .8;
+    text-shadow: 0 1px 4px rgba(0,0,0,.9); }
+  #minimap { position: absolute; right: 14px; bottom: 14px; width: 190px; height: 190px;
+    border: 2px solid rgba(255,255,255,.55); border-radius: 10px; background: #20242c;
+    box-shadow: 0 4px 18px rgba(0,0,0,.5); }
+  #hud-toast { position: absolute; bottom: 210px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,.7); padding: 8px 16px; border-radius: 20px; font-size: 14px;
+    opacity: 0; transition: opacity .3s; }
+  #hud-toast.show { opacity: 1; }
+  .screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 12px; background: rgba(8,12,22,.72); pointer-events: auto;
+    text-align: center; padding: 20px; }
+  .screen.hidden { display: none; }
+  .screen h1 { font-size: 64px; margin: 0; letter-spacing: 4px; color: #f2c14e;
+    text-shadow: 0 4px 0 #b3541e, 0 8px 24px rgba(0,0,0,.8); }
+  .screen h2 { font-size: 48px; margin: 0; letter-spacing: 3px; color: #f2c14e; }
+  .screen .tagline { font-size: 18px; letter-spacing: 2px; color: #9fd8ff; margin: 0; }
+  .screen .story { max-width: 520px; font-size: 16px; line-height: 1.5; }
+  .screen .controls { font-size: 13px; opacity: .8; max-width: 560px; }
+  .screen button { pointer-events: auto; font-size: 18px; font-weight: 800; letter-spacing: 1px;
+    padding: 14px 34px; border: 0; border-radius: 10px; cursor: pointer;
+    background: #f2c14e; color: #1a1206; box-shadow: 0 4px 0 #b3541e; }
+  .screen button:hover { filter: brightness(1.08); }
+  .screen button.ghost { background: rgba(255,255,255,.14); color: #fff; box-shadow: none;
+    border: 1px solid rgba(255,255,255,.5); font-size: 15px; padding: 10px 24px; }
+</style>
+</head>
+<body>
+<canvas id="game" aria-label="Solmar Heat: an open-city crime game — explore Solmar Bay on foot and by car"></canvas>
+<p id="status" role="status" aria-live="polite"></p>
+<div id="hud"></div>
+<script src="./three.min.js"></script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
